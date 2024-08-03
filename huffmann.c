@@ -2,14 +2,23 @@
 
 int symbol_counter(FILE *fptr)
 {
-	fseek(fptr, 0, SEEK_END);
-	size_t length = ftell(fptr);
-	char content[length];
-	
-	while(fgets(content, length, fptr))
+	int occurrences[26];
+	for(int i=0; i < 25; i++)
 	{
-		// TODO: Count number of letters a-z 
+		occurrences[i] = 0;
 	}
+
+	char c;
+	while((c = fgetc(fptr)) != EOF)
+	{
+		c = tolower(c);
+		if(c => "a" && c <= "z")
+		{
+			// ASCII: a->97, b->98 ...
+			occurrences[c-"a"]++; // Increment at inat index  c=a the occurrences[0]++  
+		}
+	}
+	return 0;
 }
 
 
@@ -17,27 +26,30 @@ int main(int argc, char* argv[])
 {
 	if(argc < 2)
 	{
-		fprint(stderr, "Missing txt-file input\n");
+		printf("error: missing txt-file input\n");
 		return 1;
 	}
 	if(argc > 2)
 	{
-		fprint(stderr, "Too many inputs\n");
+		printf("error: too many inputs\n");
 		return 1;
 	}
 
 	char *filename = argv[1];
+
 	FILE *fptr = fopen(filename, "r");
 	
-	if(fptr = NULL)
+	if(fptr == NULL)
 	{
-		fprint(stderr, "Error opening file");
+		printf("error opening file");
 		return 1;
 	}
 	
-	
-	
-	return 0;
+	int ret = symbol_counter(fptr);
+
+	fclose(fptr);
+
+	return ret;
 }
 
 
