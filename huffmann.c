@@ -1,24 +1,49 @@
 #include <stdio.h>
+#include <ctype.h>
+/*
+TODO: 
+1. Sort list of symbols based off frequency. -> Priority queue.
+2. Error handling for non-ASCII symbols and symbols not a-z. 
+*/
 
-int symbol_counter(FILE *fptr)
+typedef struct
 {
-	int occurrences[26];
+	char character;
+	int frequency;
+} symbol;
+
+
+symbol *character_frequency(FILE *fptr)
+{
+
+	// Init array, set every symbol counter to 0.
+	symbol *list = (symbol*)malloc(26 * sizeof(symbol));
+	if(list == NULL)
+	{
+		printf("Allocation error");
+		return NULL;
+	}
+
+
 	for(int i=0; i < 25; i++)
 	{
-		occurrences[i] = 0;
+		list[i].character= 'a' + i;
+		list[i].frequency = 0;
 	}
 
 	char c;
 	while((c = fgetc(fptr)) != EOF)
 	{
 		c = tolower(c);
-		if(c => "a" && c <= "z")
+		if(c >= 'a' && c <= 'z')
 		{
 			// ASCII: a->97, b->98 ...
-			occurrences[c-"a"]++; // Increment at inat index  c=a the occurrences[0]++  
+			list[c - 'a'].frequency++; // Increment frequency counter in array
 		}
 	}
-	return 0;
+
+	return list;
+
 }
 
 
@@ -45,7 +70,8 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	int ret = symbol_counter(fptr);
+	symbol *list= character_frequency(fptr);
+	
 
 	fclose(fptr);
 
